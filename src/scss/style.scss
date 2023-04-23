@@ -93,6 +93,10 @@ body {
   @include adaptive(padding, #{rem(24) rem(16) rem(22)}, $tablet rem(32));
   transition: opacity .3s linear;
 
+  &_not-click {
+    pointer-events: none;
+  }
+
   &__header {
     flex: 0;
     display: flex;
@@ -230,7 +234,7 @@ body {
     border: 1px solid $elementActive {
       radius: rem(16);
     };
-    background: url('/images/arrow-select.svg') right rem(18) center no-repeat $elementActive {
+    background: url('../images/arrow-select.svg') right rem(18) center no-repeat $elementActive {
       size: rem(16) rem(16);
     };
     color: $textColor;
@@ -329,7 +333,7 @@ body {
       margin-right: rem(4);
       width: rem(16);
       height: rem(16);
-      background: url('/images/arrow-button-prev.svg') no-repeat {
+      background: url('../images/arrow-button-prev.svg') no-repeat {
         size: 100% 100%;
       };
     }
@@ -349,7 +353,7 @@ body {
       margin-left: rem(4);
       width: rem(16);
       height: rem(16);
-      background: url('/images/arrow-button-next.svg') no-repeat {
+      background: url('../images/arrow-button-next.svg') no-repeat {
         size: 100% 100%;
       };
     }

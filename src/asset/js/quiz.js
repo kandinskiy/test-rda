@@ -4,6 +4,7 @@ function Quiz(selector, properties) {
     stepsArray = properties.steps,
     finishArray = properties.finishStep,
     stepActive = 0,
+    stopClick = 0,
     valuesArray = {},
     valuesFinish = {},
     controlStepArray = [],
@@ -17,6 +18,7 @@ function Quiz(selector, properties) {
     const controlStep = (element) => valuesArray[element];
 
     const anotherStep = (sign) => {
+      divForm.style.pointerEvents = "none";
       let futureStep = (sign === 'prev') ? stepActive - 1 : stepActive + 1;
       if (stepsArray[futureStep]) {
         divForm.style.opacity = '0';
@@ -24,6 +26,7 @@ function Quiz(selector, properties) {
           divForm.remove();
           stepActive = futureStep;
           stepReturn(stepActive);
+          divForm.style.pointerEvents = "auto";
         }, 300);
       }
     };

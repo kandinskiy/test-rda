@@ -19,7 +19,7 @@ module.exports = {
   entry: PATHS.src + 'index.js',
   output: {
     path: PATHS.dist,
-    publicPath: '/',
+    publicPath: '',
     filename: 'js/[name].js',
     clean: true,
   },
