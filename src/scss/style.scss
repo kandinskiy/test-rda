@@ -7,7 +7,7 @@
 
 html {
   height: 100%;
-  @include adaptive(font-size, 16px, (768px #{calc-between-width(768, 8.5, 1440, 16)}), (1440px 16px));
+  @include adaptive(font-size, #{calc-between-width-mobile(180, 8, 360, 16)}, 768px #{calc-between-width(768, 8.5, 1440, 16)}, (1440px 16px));
 }
 
 body {
@@ -20,7 +20,7 @@ body {
   min-height: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
+  @include adaptive(align-items, stretch, $tablet center);
 }
 
 .quiz {
@@ -29,7 +29,7 @@ body {
   @include adaptive(min-height, 100%, $tablet auto);
   display: flex;
   @include adaptive(flex-direction, column, $tablet row);
-  justify-content: space-between;
+  @include adaptive(justify-content, $tablet space-between);
   @include adaptive(border-radius, $tablet rem(24));
   @include adaptive(padding, rem(16), $tablet rem(32));
   background: #CAFFA0;
@@ -71,7 +71,7 @@ body {
   }
 
   &__form {
-    @include adaptive(flex, #{0 1 rem(512)}, $tablet #{0 1 rem(576)});
+    @include adaptive(flex, #{1 1 rem(512)}, $tablet #{0 1 rem(576)});
     display: flex;
     position: relative;
     @include adaptive(margin-top, rem(24), $tablet 0);
@@ -90,7 +90,6 @@ body {
   display: flex;
   flex-direction: column;
   height: 100%;
-  //@include adaptive(min-height, rem(512), $tablet auto);
   @include adaptive(padding, #{rem(24) rem(16) rem(22)}, $tablet rem(32));
   transition: opacity .3s linear;
 

@@ -16,9 +16,10 @@ module.exports = {
     paths: PATHS
   },
   cache: false,
-  entry: PATHS.src + 'index.js', // path.join(__dirname, 'src', 'index.js'),
+  entry: PATHS.src + 'index.js',
   output: {
     path: PATHS.dist,
+    publicPath: '/',
     filename: 'js/[name].js',
     clean: true,
   },
@@ -91,7 +92,9 @@ module.exports = {
           name: "vendors",
           test: '/node_modules/',
           chunks: "all",
-          enforce: true
+          enforce: true,
+          minSize: 1,
+          minChunks: 2
         }
       }
     },
