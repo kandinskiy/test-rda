@@ -10,78 +10,78 @@ new Quiz("#quiz form", {
         }
       ]
     },
-    {
-      title: 'В каком городе планируете поступать?',
-      elements: [
-        {
-          type: 'select',
-          name: 'quiz_city',
-          label: 'Город',
-          values: ['', 'Санкт-Петербург', 'Москва', 'Новосибирск', 'Нижний Новгород', 'Ростов-на-Дону', 'Екатеринбург', 'Краснодар']
-        }
-      ]
-    },
-    {
-      title: 'Какое образование уже есть?',
-      elements: [
-        {
-          type: 'radio',
-          name: 'quiz_education',
-          values: ['9 классов', '11 классов', 'Колледж/техникум', 'Училище', 'Неоконченное высшее', 'Высшее']
-        }
-      ]
-    },
-    {
-      title: 'Куда планируете поступать?',
-      elements: [
-        {
-          type: 'radio',
-          name: 'quiz_institution',
-          values: ['Вуз', 'Колледж/техникум', 'Училище']
-        }
-      ]
-    },
-    {
-      title: 'Какую форму обучения предпочитаете?',
-      elements: [
-        {
-          type: 'radio',
-          name: 'quiz_format',
-          values: ['Очную', 'Заочную', 'Дистанционную']
-        }
-      ]
-    },
-    {
-      title: 'Рассматриваете платное обучение?',
-      elements: [
-        {
-          type: 'radio',
-          name: 'quiz_payment',
-          values: ['Нет, только бюджет', 'Да, планирую учиться платно', 'Возможны оба варианта']
-        }
-      ]
-    },
-    {
-      title: 'Какая специальность интересует?',
-      elements: [
-        {
-          type: 'select',
-          name: 'quiz_specialty',
-          label: 'Специальность',
-          values: ['', 'Любая', 'Экономика', 'Философия', 'Социология', 'Юриспруденция', 'Менеджмент', 'Информатика']
-        }
-      ]
-    },
-    {
-      title: 'Как скоро планируете поступать?',
-      elements: [
-        {
-          type: 'radio',
-          name: 'quiz_period',
-          values: ['Как можно быстрее', 'Месяц', 'Квартал', 'Полгода', 'Год']
-        }
-      ]
-    },
+    // {
+    //   title: 'В каком городе планируете поступать?',
+    //   elements: [
+    //     {
+    //       type: 'select',
+    //       name: 'quiz_city',
+    //       label: 'Город',
+    //       values: ['', 'Санкт-Петербург', 'Москва', 'Новосибирск', 'Нижний Новгород', 'Ростов-на-Дону', 'Екатеринбург', 'Краснодар']
+    //     }
+    //   ]
+    // },
+    // {
+    //   title: 'Какое образование уже есть?',
+    //   elements: [
+    //     {
+    //       type: 'radio',
+    //       name: 'quiz_education',
+    //       values: ['9 классов', '11 классов', 'Колледж/техникум', 'Училище', 'Неоконченное высшее', 'Высшее']
+    //     }
+    //   ]
+    // },
+    // {
+    //   title: 'Куда планируете поступать?',
+    //   elements: [
+    //     {
+    //       type: 'radio',
+    //       name: 'quiz_institution',
+    //       values: ['Вуз', 'Колледж/техникум', 'Училище']
+    //     }
+    //   ]
+    // },
+    // {
+    //   title: 'Какую форму обучения предпочитаете?',
+    //   elements: [
+    //     {
+    //       type: 'radio',
+    //       name: 'quiz_format',
+    //       values: ['Очную', 'Заочную', 'Дистанционную']
+    //     }
+    //   ]
+    // },
+    // {
+    //   title: 'Рассматриваете платное обучение?',
+    //   elements: [
+    //     {
+    //       type: 'radio',
+    //       name: 'quiz_payment',
+    //       values: ['Нет, только бюджет', 'Да, планирую учиться платно', 'Возможны оба варианта']
+    //     }
+    //   ]
+    // },
+    // {
+    //   title: 'Какая специальность интересует?',
+    //   elements: [
+    //     {
+    //       type: 'select',
+    //       name: 'quiz_specialty',
+    //       label: 'Специальность',
+    //       values: ['', 'Любая', 'Экономика', 'Философия', 'Социология', 'Юриспруденция', 'Менеджмент', 'Информатика']
+    //     }
+    //   ]
+    // },
+    // {
+    //   title: 'Как скоро планируете поступать?',
+    //   elements: [
+    //     {
+    //       type: 'radio',
+    //       name: 'quiz_period',
+    //       values: ['Как можно быстрее', 'Месяц', 'Квартал', 'Полгода', 'Год']
+    //     }
+    //   ]
+    // },
     {
       title: 'Отлично, ваша подборка готова! 🥳',
       elements: [
@@ -101,9 +101,16 @@ new Quiz("#quiz form", {
   executeFunction: quizSubmit
 });
 
+let newElement = (type, attributes = {}, classes = []) => {
+  let element = document.createElement(type);
+  for (let key in attributes) { if (attributes.hasOwnProperty(key)) { element.setAttribute(key, attributes[key]); } }
+  if (classes && classes.length) { for (let value of classes) { element.classList.add(value); } }
+  return element;
+};
+
 function quizSubmit() {
   const quiz = document.getElementById('quiz'),
-    form = document.querySelector('form');
+    form = quiz.querySelector('form');
 
   let valuesForm = {
     'answers': form.answers.value,
@@ -117,29 +124,28 @@ function quizSubmit() {
 
   form.submit.setAttribute('disabled', 'disabled');
 
-  const loaderBlock = document.createElement('div');
-  loaderBlock.classList.add('loader');
-  const loaderImage = new Image();
-  loaderImage.src = '/images/loader.svg';
-  loaderImage.alt = '';
-  loaderImage.classList.add('loader__img');
+  let loaderBlock = newElement('div', {}, ['loader']);
+
+  let loaderImage = newElement('img', {
+    src: '/images/loader.svg', alt: ''
+  }, ['loader__img']);
 
   loaderBlock.appendChild(loaderImage);
   form.appendChild(loaderBlock);
 
-  const informBlock = document.createElement('div');
-  informBlock.classList.add('inform-block');
+  let informBlock = newElement('div', {}, ['inform-block']);
   informBlock.style.opacity = '0';
-  const informBlockImage = new Image();
-  informBlockImage.src = '/images/quiz-end.png';
-  informBlockImage.alt = '';
-  informBlockImage.classList.add('inform-block__img');
-  const informBlockTitle = document.createElement('div');
-  informBlockTitle.classList.add('inform-block__title');
+
+  let informBlockImage = newElement('img', {
+    src: '/images/quiz-end.png', alt: ''
+  }, ['inform-block__img']);
+
+  let informBlockTitle = newElement('div', {}, ['inform-block__title']);
   informBlockTitle.innerText = 'Отлично, спасибо!';
-  const informBlockText = document.createElement('div');
-  informBlockText.classList.add('inform-block__text');
+
+  let informBlockText = newElement('div', {}, ['inform-block__text']);
   informBlockText.innerHTML = 'Мы отправили подборку вам на почту.<br>Если подборка не приходит — проверьте спам, возможно, она попала туда.';
+
   informBlock.append(informBlockImage, informBlockTitle, informBlockText);
 
   //Вместо ajax
@@ -147,8 +153,8 @@ function quizSubmit() {
     setTimeout(() => {
       form.style.opacity = '0';
       resolve();
-    }, 3000);
-  }).then(resolve => {
+    }, 4000);
+  }).then(() => {
       setTimeout(() => {
         form.remove();
         quiz.appendChild(informBlock);

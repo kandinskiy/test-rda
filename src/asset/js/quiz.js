@@ -1,19 +1,31 @@
 function Quiz(selector, properties) {
 
   let quizBlock = document.querySelector(selector),
-    stepsArray = properties.steps,
-    finishArray = properties.finishStep,
+    stepsArray = properties.steps;
+
+  if (!quizBlock || !stepsArray || !stepsArray.length) return;
+
+  const newElement = (type, attributes = {}, classes = []) => {
+    let element = document.createElement(type);
+    for (let key in attributes) { if (attributes.hasOwnProperty(key)) { element.setAttribute(key, attributes[key]); } }
+    if (classes && classes.length) { for (let value of classes) { element.classList.add(value); } }
+    return element;
+  };
+
+  const editElement = (element, attributes = {}, classes = []) => {
+    if (!element || typeof element === 'undefined') return;
+    for (let key in attributes) { if (attributes.hasOwnProperty(key)) { element.setAttribute(key, attributes[key]); } }
+    if (classes && classes.length) { for (let value of classes) { element.classList.add(value); } }
+  };
+
+  let finishArray = properties.finishStep,
     stepActive = 0,
-    stopClick = 0,
     valuesArray = {},
     valuesFinish = {},
     controlStepArray = [],
     controlFinishArray = [];
 
-  if (!quizBlock || !stepsArray || !stepsArray.length) return;
-
   const stepReturn = (index) => {
-    controlStepArray = [];
 
     const controlStep = (element) => valuesArray[element];
 
@@ -33,25 +45,25 @@ function Quiz(selector, properties) {
 
     const radioReturn = (name, values) => {
 
-      let divRadio = document.createElement('div');
-      divRadio.classList.add('quiz-radio');
-
+      let divRadio = newElement('div', {}, ['quiz-radio']);
       if (values.length > 3) divRadio.classList.add('quiz-radio_two-columns');
 
       for (let i = 0; i < values.length; i++) {
-        let divRadioItem = document.createElement('div'),
-          inputRadio = document.createElement('input'),
-          labelRadio = document.createElement('label');
-
+        let divRadioItem = document.createElement('div');
         divRadioItem.classList.add('quiz-radio__item');
 
-        inputRadio.setAttribute('type', 'radio');
-        inputRadio.setAttribute('name', name);
-        inputRadio.setAttribute('value', values[i]);
-        inputRadio.setAttribute('id', name + '-' + i);
-        inputRadio.classList.add('quiz-radio__input');
+        let inputRadio = newElement('input', {
+          type: 'radio', name: name, value: values[i], id: name + '-' + i
+        }, [
+          'quiz-radio__input'
+        ]);
 
         if (valuesArray[name] === values[i]) inputRadio.checked = true;
+
+        let labelRadio = newElement('label', {
+          'for': name + '-' + i
+        }, ['quiz-radio__label']);
+        labelRadio.innerText = values[i];
 
         inputRadio.addEventListener('change', () => {
           valuesArray[name] = values[i];
@@ -61,12 +73,7 @@ function Quiz(selector, properties) {
           }
         });
 
-        labelRadio.classList.add('quiz-radio__label');
-        labelRadio.setAttribute('for', name + '-' + i);
-        labelRadio.innerText = values[i];
-
-        divRadioItem.appendChild(inputRadio);
-        divRadioItem.appendChild(labelRadio);
+        divRadioItem.append(inputRadio, labelRadio);
         divRadio.appendChild(divRadioItem);
       }
 
@@ -75,22 +82,21 @@ function Quiz(selector, properties) {
 
     const selectReturn = (name, labelText, values) => {
 
-      let divSelect = document.createElement('div');
-      divSelect.classList.add('quiz-select');
+      let divSelect = newElement('div', {}, ['quiz-select']);
 
-      let labelBlock = document.createElement('label');
-      labelBlock.setAttribute('for', name);
-      labelBlock.classList.add('quiz-select__label');
+      let labelBlock = newElement('label', {
+        for: name,
+      }, ['quiz-select__label']);
       labelBlock.innerText = labelText;
 
-      let select = document.createElement('select');
-      select.classList.add('quiz-select__select');
-      select.setAttribute('name', name);
-      select.setAttribute('id', name);
+      let select = newElement('select', {
+        name: name, id: name
+      }, ['quiz-select__select']);
 
       for (let i = 0; i < values.length; i++) {
-        let option = document.createElement('option');
-        option.value = values[i];
+        let option = newElement('option', {
+          value: values[i]
+        });
         option.innerText = values[i];
         if (values[i] === valuesArray[name]) {
           option.setAttribute('selected', 'selected');
@@ -110,46 +116,39 @@ function Quiz(selector, properties) {
         }
       });
 
-      divSelect.appendChild(labelBlock);
-      divSelect.appendChild(select);
-
+      divSelect.append(labelBlock, select);
       return divSelect;
     };
 
     const finishFormReturn = () => {
       controlFinishArray = [];
 
-      const submit = document.createElement('button');
-      const controlFinish = (element) => valuesFinish[element];
+      let submit = document.createElement('button');
+      let controlFinish = (element) => valuesFinish[element];
 
       for (let i = 0; i < finishArray.length; i++) {
         if (finishArray[i].impotent) controlFinishArray.push(finishArray[i].name);
       }
 
-      const valuesQuiz = Object.values(valuesArray);
+      let valuesQuiz = Object.values(valuesArray);
 
-      let hidden = document.createElement('input');
-      hidden.setAttribute('type', 'hidden');
-      hidden.setAttribute('name', 'answers');
-      hidden.setAttribute('value', JSON.stringify(valuesQuiz));
+      let hidden = newElement('input', {
+        type: 'hidden', name: 'answers', value: JSON.stringify(valuesQuiz)
+      });
       quizBlock.appendChild(hidden);
 
       for (let i = 0; i < finishArray.length; i++) {
         if (finishArray[i].object === 'input') {
 
-          let endFormDiv = document.createElement('div'),
-            endFormInput = document.createElement('input'),
-            endFormLabel = document.createElement('label');
+          let endFormDiv = newElement('div', {}, ['quiz-input']);
 
-          endFormDiv.classList.add('quiz-input');
+          let endFormInput = newElement('input', {
+            type: finishArray[i].type, name: finishArray[i].name, id: finishArray[i].name
+          }, ['quiz-input__input']);
 
-          endFormInput.setAttribute('type', finishArray[i].type);
-          endFormInput.setAttribute('name', finishArray[i].name);
-          endFormInput.setAttribute('id', finishArray[i].name);
-          endFormInput.classList.add('quiz-input__input');
-
-          endFormLabel.setAttribute('for', finishArray[i].name);
-          endFormLabel.classList.add('quiz-input__label');
+          let endFormLabel = newElement('label', {
+            for: finishArray[i].name
+          }, ['quiz-input__label']);
           endFormLabel.innerText = finishArray[i].label;
 
           endFormInput.addEventListener('input', () => {
@@ -162,12 +161,8 @@ function Quiz(selector, properties) {
               endFormLabel.classList.remove('quiz-input__label_active');
               valuesFinish[finishArray[i].name] = '';
             }
-
-            if (controlFinishArray.every(controlFinish)) {
-              submit.removeAttribute('disabled');
-            } else {
+            (controlFinishArray.every(controlFinish)) ? submit.removeAttribute('disabled') :
               submit.setAttribute('disabled', 'disabled');
-            }
           });
 
           endFormDiv.appendChild(endFormInput);
@@ -176,19 +171,16 @@ function Quiz(selector, properties) {
 
         } else if (finishArray[i].object === 'submit') {
 
-          submit.setAttribute('type', 'submit');
-          submit.setAttribute('name', finishArray[i].name);
-          submit.setAttribute('title', finishArray[i].text);
-          submit.classList.add('quiz-button', 'quiz-button_submit');
+          editElement(submit, {
+            type: 'submit', name: finishArray[i].name, title: finishArray[i].text, disabled: 'disabled'
+          }, ['quiz-button', 'quiz-button_submit']);
           submit.innerText = finishArray[i].text;
-          submit.setAttribute('disabled', 'disabled');
 
           divButtons.appendChild(submit);
 
         } else if (finishArray[i].object === 'agreed') {
 
-          let agreed = document.createElement('div');
-          agreed.classList.add('quiz-agreed');
+          let agreed = newElement('div', {}, ['quiz-agreed']);
           agreed.innerHTML = finishArray[i].text;
 
           divFooter.appendChild(agreed);
@@ -198,19 +190,12 @@ function Quiz(selector, properties) {
 
     };
 
+    controlStepArray = [];
+
     let stepArray = stepsArray[index],
       stepTitle = stepArray.title,
       stepText = 'Шаг ' + (index + 1) + '/' + stepsArray.length,
       stepElements = stepArray.elements,
-
-      divForm = document.createElement('div'),
-      divHeader = document.createElement('div'),
-      divTitle = document.createElement('div'),
-      divStep = document.createElement('div'),
-      divBody = document.createElement('div'),
-      divElements = document.createElement('div'),
-      divFooter = document.createElement('div'),
-      divButtons = document.createElement('div'),
       buttonPrev,
       buttonNext;
 
@@ -218,16 +203,31 @@ function Quiz(selector, properties) {
       controlStepArray.push(elem.name);
     });
 
+    let divForm = document.createElement('div');
     divForm.classList.add('quiz-form');
     divForm.style.opacity = '0';
+
+    let divHeader = document.createElement('div');
     divHeader.classList.add('quiz-form__header');
+
+    let divTitle = document.createElement('div');
     divTitle.classList.add('quiz-form__title');
     divTitle.innerText = stepTitle;
+
+    let divStep = document.createElement('div');
     divStep.classList.add('quiz-form__step');
     divStep.innerText = stepText;
+
+    let divBody = document.createElement('div');
     divBody.classList.add('quiz-form__body');
+
+    let divElements = document.createElement('div');
     divElements.classList.add('quiz-form__elements');
+
+    let divFooter = document.createElement('div');
     divFooter.classList.add('quiz-form__footer');
+
+    let divButtons = document.createElement('div');
     divButtons.classList.add('quiz-form__buttons');
 
     if (typeof stepElements === 'object' && stepElements.length) {
