@@ -1,0 +1,440 @@
+@import 'vars';
+@import 'mixins';
+
+//Подключение шрифтов
+@include font-face('Onest-Regular');
+@include font-face('Onest-Medium');
+
+html {
+  height: 100%;
+  @include adaptive(font-size, 16px, (768px #{calc-between-width(768, 8.5, 1440, 16)}), (1440px 16px));
+}
+
+body {
+  height: 100%;
+  background: $bodyBg;
+}
+
+.wrapper {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.quiz {
+  position: relative;
+  @include adaptive(width, 100%, $tablet rem(1216));
+  @include adaptive(min-height, 100%, $tablet auto);
+  display: flex;
+  @include adaptive(flex-direction, column, $tablet row);
+  justify-content: space-between;
+  @include adaptive(border-radius, $tablet rem(24));
+  @include adaptive(padding, rem(16), $tablet rem(32));
+  background: #CAFFA0;
+  @include adaptive(font, #{rem(14)/1.43 $fontRegular}, $tablet #{rem(16)/1.25 $fontRegular});
+
+  &__content {
+    @include adaptive(flex, 0, $tablet #{0 1 rem(400)});
+    @include adaptive(min-height, $tablet 100%);
+    display: flex;
+    flex-direction: column;
+    @include adaptive(text-align, center, $tablet left);
+  }
+
+  &__title {
+    flex: 0;
+    @include adaptive(margin-top, rem(22), $tablet 0);
+    @include adaptive(font, #{rem(22)/1.1 $fontMedium}, $tablet #{rem(32)/1.1 $fontMedium});
+    color: $textColor;
+  }
+
+  &__text {
+    flex: 1;
+    @include adaptive(margin-top, rem(4), $tablet rem(16));
+    color: $textColor;
+    opacity: 0.7;
+  }
+
+  &__img {
+    flex: 0;
+    @include adaptive(order, -1, $tablet initial);
+    justify-self: flex-end;
+    padding: 0 rem(10);
+
+    img {
+      @include adaptive(width, rem(185), $tablet rem(356));
+      height: auto;
+      vertical-align: bottom;
+    }
+  }
+
+  &__form {
+    @include adaptive(flex, #{0 1 rem(512)}, $tablet #{0 1 rem(576)});
+    display: flex;
+    position: relative;
+    @include adaptive(margin-top, rem(24), $tablet 0);
+    @include adaptive(height, $tablet rem(392));
+    @include adaptive(border-radius, rem(16), $tablet rem(24));
+    background: #ffffff;
+  }
+
+  form {
+    flex: 1;
+    transition: opacity .3s linear;
+  }
+}
+
+.quiz-form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  //@include adaptive(min-height, rem(512), $tablet auto);
+  @include adaptive(padding, #{rem(24) rem(16) rem(22)}, $tablet rem(32));
+  transition: opacity .3s linear;
+
+  &__header {
+    flex: 0;
+    display: flex;
+    @include adaptive(flex-direction, column-reverse, $tablet row);
+
+    @include media(min, $tablet) {
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  &__title {
+    @include adaptive(margin-top, rem(4), $tablet 0);
+    font: rem(16)/1.25 $fontMedium;
+    color: $textColor;
+  }
+
+  &__step {
+    @include adaptive(font, #{rem(12)/1.17 $fontRegular}, $tablet inherit);
+    color: $noteColor;
+  }
+
+  &__body {
+    flex: 1;
+    @include adaptive(margin-top, rem(16), $tablet rem(24));
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__elements {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    @include adaptive(gap, rem(4), $tablet rem(8));
+  }
+
+  &__footer {
+    position: relative;
+    flex: 0;
+  }
+
+  &__buttons {
+    display: grid;
+    grid-auto-flow: column;
+    gap: rem(8);
+    @include adaptive(margin-top, rem(16), $tablet 0);
+  }
+}
+
+.quiz-radio {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  @include adaptive(gap, rem(4), $tablet rem(8));
+
+  &_two-columns {
+    @include adaptive(grid-template-columns, $tablet #{1fr 1fr});
+  }
+
+  &__item {
+    overflow: hidden;
+    position: relative;
+  }
+
+  &__input {
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    width: 10px;
+    height: 10px;
+  }
+
+  &__label {
+    display: block;
+    position: relative;
+    @include adaptive(padding, #{rem(18) rem(44) rem(18) rem(12)}, $tablet #{rem(19) rem(52) rem(19) rem(16)});
+    border: 1px solid $elementActive {
+      radius: rem(16);
+    };
+    background: $elementActive;
+    line-height: 1;
+    color: $textColor;
+    cursor: pointer;
+    transition: border-color .3s linear, background-color .3s linear;
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: rem(16);
+      transform: translateY(-50%);
+      width: rem(20);
+      height: rem(20);
+      border: 1px solid #D8D8D8 {
+        radius: 50%;
+      };
+      transition: border .3s linear, background-color .3s linear;
+    }
+
+    &:hover {
+      background: initial;
+    }
+  }
+
+  &__input:checked + &__label {
+    border-color: $elementDeign;
+    background: #ffffff;
+
+    &:after {
+      border: 6px solid $elementDeign;
+      background: #ffffff;
+    }
+  }
+}
+
+.quiz-select {
+  position: relative;
+
+  &__label {
+    display: inline-block;
+    position: absolute;
+    top: rem(10);
+    left: rem(16);
+    z-index: 10;
+    font: rem(12)/1.2 $fontRegular;
+    color: #9B9B9B;
+  }
+
+  &__select {
+    display: block;
+    width: 100%;
+    height: rem(56);
+    padding: rem(20) rem(48) 0 rem(16);
+    border: 1px solid $elementActive {
+      radius: rem(16);
+    };
+    background: url('/images/arrow-select.svg') right rem(18) center no-repeat $elementActive {
+      size: rem(16) rem(16);
+    };
+    color: $textColor;
+    cursor: pointer;
+    appearance:none;
+
+    &_active {
+      border-color: $elementDeign;
+      background-color: #ffffff;
+    }
+
+    option {
+      padding: rem(8) rem(18);
+    }
+  }
+}
+
+.quiz-input {
+  position: relative;
+
+  &__input {
+    display: block;
+    padding: rem(20) rem(16) 0 rem(16);
+    width: 100%;
+    height: rem(56);
+    border: 1px solid $elementActive {
+      radius: rem(16);
+    };
+    background: $elementActive;
+    transition: background-color .3s linear, border-color .3s linear;
+
+    &:focus, &_active {
+      border-color: $elementDeign;
+      background: #ffffff;
+    }
+  }
+
+  &__label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: none;
+    padding: rem(18) rem(16);
+    color: #9B9B9B;
+    cursor: auto;
+    transition: top .3s linear, font-size .3s linear, padding-top .3s linear;
+
+    :focus + &, &_active {
+      top: rem(10);
+      padding: 0 rem(16);
+      font-size: rem(12);
+    }
+  }
+}
+
+.quiz-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 rem(20);
+  height: rem(44);
+  border: 1px solid $elementDeign {
+    radius: rem(12);
+  };
+  background: $elementDeign;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background-color .3s linear, border-color .3s linear;
+
+  &:not(:disabled):hover {
+   background: #555555;
+  }
+
+  &_not-important {
+    border: 1px solid #D8D8D8;
+    background-color: #ffffff;
+    color: $elementDeign;
+
+    &:not(:disabled):hover {
+      background-color: #f5f5f5;
+      border-color: #f5f5f5;
+    }
+  }
+
+  &_submit {
+    @include adaptive(height, rem(52), $tablet rem(56));
+  }
+
+  &_prev {
+    justify-self: start;
+    @include adaptive(width, 100%, $tablet auto);
+
+    &:before {
+      content: '';
+      display: inline-block;
+      margin-right: rem(4);
+      width: rem(16);
+      height: rem(16);
+      background: url('/images/arrow-button-prev.svg') no-repeat {
+        size: 100% 100%;
+      };
+    }
+  }
+
+  &_next {
+    @include adaptive(width, 100%, $tablet auto);
+    @include adaptive(justify-self, $tablet end);
+
+    * + & {
+      justify-self: end;
+    }
+
+    &:after {
+      content: '';
+      display: inline-block;
+      margin-left: rem(4);
+      width: rem(16);
+      height: rem(16);
+      background: url('/images/arrow-button-next.svg') no-repeat {
+        size: 100% 100%;
+      };
+    }
+  }
+
+  &:disabled {
+    opacity: .5;
+    cursor: default;
+
+  }
+}
+
+.quiz-agreed {
+  margin-top: rem(8);
+  text-align: center;
+  font: rem(12)/1.67 $fontRegular;
+  color: #9B9B9B;
+
+  a {
+    text-decoration: underline;
+    color: $elementDeign;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+}
+
+.loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    @include adaptive(border-radius, rem(16), $tablet rem(24));
+    background: $elementDeign;
+    opacity: .3;
+  }
+
+  &__img {
+    position: relative;
+    z-index: 2;
+    width: rem(50);
+    height: auto;
+    vertical-align: bottom;
+  }
+}
+
+.inform-block {
+  flex: 1;
+  align-self: center;
+  position: relative;
+  @include adaptive(padding, 0 15px, $tablet 0);
+  text-align: center;
+  transition: opacity .3s linear;
+
+  &__img {
+    width: rem(56);
+    height: auto;
+    vertical-align: bottom;
+  }
+
+  &__title {
+    margin-top: rem(24);
+    font: rem(18)/1.33 $fontMedium;
+    color: $textColor;
+  }
+
+  &__text {
+    margin-top: rem(8);
+    font: rem(14)/1.43 $fontRegular;
+    color: #9B9B9B;
+  }
+}

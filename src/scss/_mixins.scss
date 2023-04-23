@@ -1,0 +1,46 @@
+// calc расчета font-size для html для резиновой верстки в rem
+@function calc-between-width($width-start, $value-start, $width-end, $value-end) {
+  @return calc(#{$value-start} * 1px + (#{$value-end} - #{$value-start}) * (100vw - #{$width-start} * 1px) / (#{$width-end} - #{$width-start}));
+}
+
+//Перевод px в rem
+@function rem($val) {
+  @return calc(#{$val}/ 16 * 1rem);
+}
+
+// Адаптив @include media('min', $mobile) {} @include media('min', $tablet) {} @include media('min', $desktop) {}
+@mixin media($minmax, $width) {
+  @if $minmax == max {$width: $width - 1};
+  @media only screen and (#{$minmax}-width: $width) {
+    @content;
+  }
+}
+
+@mixin mediaSection($min, $max) {
+  @media only screen and (min-width: $min) and (max-width: $max) {
+    @content;
+  }
+}
+
+// Подключение шрифтов
+@mixin font-face($font) {
+  @font-face {
+    font-family: $font;
+    font-weight: normal;
+    font-style: normal;
+    src: url("/fonts/#{$font}.woff") format('woff'), url("/fonts/#{$font}.ttf") format('truetype');
+  }
+}
+
+// Указание адаптива для свойства внутри селектора
+@mixin adaptive($property, $arrays...) {
+  @each $array in $arrays {
+    @if length($array) == 1 {
+      #{$property}: #{nth($array, 1)};
+    } @else {
+      @media only screen and (min-width: #{nth($array, 1)}) {
+        #{$property}: #{nth($array, 2)};
+      }
+    }
+  }
+}
