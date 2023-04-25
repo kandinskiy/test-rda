@@ -151,8 +151,7 @@ function quizSubmit() {
   //Вместо ajax
   (() => new Promise(resolve => {
     setTimeout(() => {
-      form.style.opacity = '0';
-      resolve();
+      resolve(form.style.opacity = '0');
     }, 4000);
   }).then(() => {
       setTimeout(() => {
